@@ -1,66 +1,111 @@
 package com.example.spa;
 
+import org.json.JSONObject;
 
-
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.logging.Logger;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.net.*;
 
 public class Weather {
+    private String town;
+
+    public Weather(String town) {
+        this.town = town;
+    }
+
 
     private final static Logger LOGGER = Logger.getLogger(Weather.class.getName());
 
-    public URL cats() throws IOException {
-        URL url = new URL("https://purr.objects-us-east-1.dream.io/i/2mpW9.jpg");
-        URL url2 = new URL("https://aws.random.cat/meow");
-        LOGGER.info("prend l'url");
-        BufferedImage image = ImageIO.read(url.openStream());
-        //BufferedImage image = ImageIO.read(new URL("https://purr.objects-us-east-1.dream.io/i/2013-10-19%2016.06.51.jpg"));
-        LOGGER.info("prend l'image de L'url");
-//        Image scaledImage = image.getScaledInstance(300, 150, Image.SCALE_DEFAULT);
-        LOGGER.info("prendre la dimension de l'image");
-        ImageIO.write(
-                //convertToBufferedImage(scaledImage),
-                image,
-                "png",
-                new File("C:\\Users\\utilisateur\\Desktop\\image.png"));
-        LOGGER.info("enregistrer l'image au bureaux");
 
-        return url2;
-        //return image;
-    }
+    public Object get_weather() throws IOException {
+        LOGGER.info(this.town);
 
-    public static BufferedImage convertToBufferedImage(Image img) {
+        String meteo = "https://www.metaweather.com/api/location/search/?query=";
+        LOGGER.info(meteo);
+        URL urlMeteo = new URL(meteo +town);
+        LOGGER.info(urlMeteo.toString());
+        JSONObject jo = null;
+        HttpURLConnection con = (HttpURLConnection) urlMeteo.openConnection();
+        con.setRequestMethod("GET");
+        int status = con.getResponseCode();
+        if (status == 200) {
+            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            StringBuffer content = new StringBuffer();
+            while ((inputLine = in.readLine()) != null) {
+                inputLine = inputLine.replace("[", "").replace("]","");
+                content.append(inputLine);
 
-        if (img instanceof BufferedImage) {
-            return (BufferedImage) img;
+            }
+            LOGGER.info(content.toString()+"ssss");
+            jo = new JSONObject(content.toString());
+            //return jo;
         }
+        LOGGER.info(jo.get("woeid").toString());
 
-        // Create a buffered image with transparency
-        BufferedImage bi = new BufferedImage(
-                img.getWidth(null), img.getHeight(null),
-                BufferedImage.TYPE_INT_ARGB);
+        return jo;
+        
 
-        Graphics2D graphics2D = bi.createGraphics();
-        graphics2D.drawImage(img, 0, 0, null);
-        graphics2D.dispose();
 
-        return bi;
+        // GET CAT IMAGE
+        /*
+        URL url = new URL("https://aws.random.cat/meow");
+        LOGGER.info("prend l':  " + url.toString());
+        JSONObject jo = null;
+        LOGGER.info("Connexion a l'URL: ");
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("GET");
+        int status = con.getResponseCode();
+        LOGGER.info(String.valueOf(status));
+        if (status == 200) {
+            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            StringBuffer content = new StringBuffer();
+            while ((inputLine = in.readLine()) != null) {
+                content.append(inputLine);
+            }
+            // Now use JSONObject to transform content into a Json
+            LOGGER.info(content.toString());
+            jo = new JSONObject(content.toString());
+            LOGGER.info(jo.get("file").toString());
+            //return jo.get("file").toString();
+        }
+        //return jo.get("file").toString();
+
+         */
+
     }
 
-    public URL dog() throws MalformedURLException {
-        URL urldog = new URL("https://random.dog/");
-        return urldog;
-    }
+//    public static BufferedImage convertToBufferedImage(Image img) {
+//
+//        if (img instanceof BufferedImage) {
+//            return (BufferedImage) img;
+//        }
+//
+//        // Create a buffered image with transparency
+//        BufferedImage bi = new BufferedImage(
+//                img.getWidth(null), img.getHeight(null),
+//                BufferedImage.TYPE_INT_ARGB);
+//
+//        Graphics2D graphics2D = bi.createGraphics();
+//        graphics2D.drawImage(img, 0, 0, null);
+//        graphics2D.dispose();
+//
+//        return bi;
+//    }
 
-    public URL fox() throws MalformedURLException {
-        URL urlfox = new URL("https://randomfox.ca/");
-        return urlfox;
-    }
+//    public URL dog() throws MalformedURLException {
+//        URL urldog = new URL("https://random.dog/");
+//        return urldog;
+//    }
+//
+//    public URL fox() throws MalformedURLException {
+//        URL urlfox = new URL("https://randomfox.ca/");
+//        return urlfox;
+//    }
+
 
 }
