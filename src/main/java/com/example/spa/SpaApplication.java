@@ -66,7 +66,7 @@ public class SpaApplication {
 		JSONArray arr = jo2.getJSONArray("consolidated_weather");
 		String date = null;
 		String TempsMeteo = null;
-		String picture_weather = null;
+		Object picture_weather = null;
 		JSONObject joFinal = new JSONObject();
 		joFinal.put("content", new JSONArray());
 		JSONArray list_fill = (JSONArray) joFinal.get("content");
@@ -78,19 +78,30 @@ public class SpaApplication {
 			date = t.getString("applicable_date");
 			TempsMeteo = t.getString("weather_state_name");
 			Temperature = t.getInt("the_temp");
-			dct.put("date", date).put("weather",TempsMeteo).put("temperature", Temperature);
+			if(dct.get("weather") == "Heavy Cloud" || dct.get("weather") == "Showers" ||dct.get("weather") == "Light Cloud" || dct.get("weather") == "Light Rain" || dct.get("weather") == "Heavy Rain"){
+				Weather meteoChien = new Weather(town);
+				picture_weather = meteoChien.get_UrlDog().toString();
+
+			}
+			if(dct.get("weather") == "Clear" || dct.get("weather") == "Sunny" ||dct.get("weather") == "Light Cloud"){
+				Weather meteoChat = new Weather(town);
+				picture_weather = meteoChat.get_UrlCats().toString();
+
+			}
+			else {
+				Weather meteoFox = new Weather(town);
+				picture_weather = meteoFox.get_UrlFox().toString();
+			}
+			LOGGER.info(picture_weather.toString());
+			dct.put("date", date).put("weather",TempsMeteo).put("picture_weather",picture_weather).put("temperature", Temperature);
 			list_fill.put(dct);
 			//System.out.println(consolidated_weather);
 			//return consolidated_weather;
 		}
 		LOGGER.info("dernier json: "+joFinal.toString());
 
-		//JSONObject infoMeteo =  new JSONObject("{\"day\":\"dd-mm-yyyy\", \"weather\": \"fog|snow|heavy rain\", \"picture_weather\": \"<URL to picture>\", \"temperature\": 12}");
 		return joFinal.toString();
-		//return consolidated_weather + TempsMeteo + Temperature;
 		//return jo2.toString();
-
-
 
 	}
 

@@ -29,6 +29,7 @@ public class Weather {
         JSONObject jo = null;
         HttpURLConnection con = (HttpURLConnection) urlMeteo.openConnection();
         con.setRequestMethod("GET");
+
         int status = con.getResponseCode();
         if (status == 200) {
             BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
@@ -46,6 +47,8 @@ public class Weather {
         }
         LOGGER.info(jo.get("woeid").toString());
         return jo;
+
+
         
 
 
@@ -77,24 +80,90 @@ public class Weather {
          */
 
     }
+    public Object get_UrlCats() throws IOException{
 
-//    public static BufferedImage convertToBufferedImage(Image img) {
-//
-//        if (img instanceof BufferedImage) {
-//            return (BufferedImage) img;
-//        }
-//
-//        // Create a buffered image with transparency
-//        BufferedImage bi = new BufferedImage(
-//                img.getWidth(null), img.getHeight(null),
-//                BufferedImage.TYPE_INT_ARGB);
-//
-//        Graphics2D graphics2D = bi.createGraphics();
-//        graphics2D.drawImage(img, 0, 0, null);
-//        graphics2D.dispose();
-//
-//        return bi;
-//    }
+        // GET CAT IMAGE
+        URL url = new URL("https://aws.random.cat/meow");
+        LOGGER.info("prend l':  " + url.toString());
+        JSONObject jo = null;
+        LOGGER.info("Connexion a l'URL: ");
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("GET");
+        int status = con.getResponseCode();
+        LOGGER.info(String.valueOf(status));
+        if (status == 200) {
+            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            StringBuffer content = new StringBuffer();
+            while ((inputLine = in.readLine()) != null) {
+                content.append(inputLine);
+            }
+            // Now use JSONObject to transform content into a Json
+            LOGGER.info(content.toString());
+            jo = new JSONObject(content.toString());
+            LOGGER.info(jo.get("file").toString());
+            //return jo.get("file").toString();
+        }
+        return jo.get("file").toString();
+
+    }
+    public Object get_UrlDog() throws IOException{
+
+        // GET DOG IMAGE
+        URL url = new URL("https://random.dog/woof.json");
+        LOGGER.info("prend l':  " + url.toString());
+        JSONObject jo = null;
+        LOGGER.info("Connexion a l'URL: ");
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("GET");
+        int status = con.getResponseCode();
+        LOGGER.info(String.valueOf(status));
+        if (status == 200) {
+            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            StringBuffer content = new StringBuffer();
+            while ((inputLine = in.readLine()) != null) {
+                content.append(inputLine);
+            }
+            // Now use JSONObject to transform content into a Json
+            LOGGER.info(content.toString());
+            jo = new JSONObject(content.toString());
+            LOGGER.info(jo.get("url").toString());
+            //return jo.get("file").toString();
+        }
+        return jo.get("url").toString();
+    }
+
+    public Object get_UrlFox() throws IOException{
+
+        //GET FOX IMAGE
+        URL url = new URL("https://randomfox.ca/floof/");
+        LOGGER.info("prend l':  " + url.toString());
+        JSONObject jo = null;
+        LOGGER.info("Connexion a l'URL: ");
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("GET");
+        int status = con.getResponseCode();
+        LOGGER.info(String.valueOf(status));
+        if (status == 200) {
+            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            StringBuffer content = new StringBuffer();
+            while ((inputLine = in.readLine()) != null) {
+                content.append(inputLine);
+            }
+            // Now use JSONObject to transform content into a Json
+            LOGGER.info(content.toString());
+            jo = new JSONObject(content.toString());
+            LOGGER.info(jo.get("image").toString());
+            //return jo.get("file").toString();
+        }
+        return jo.get("image").toString();
+
+    }
+
+
+
 
 //    public URL dog() throws MalformedURLException {
 //        URL urldog = new URL("https://random.dog/");
