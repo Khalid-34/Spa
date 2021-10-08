@@ -22,7 +22,6 @@ public class Weather {
 
     public Object get_weather() throws IOException {
         LOGGER.info(this.town);
-
         String meteo = "https://www.metaweather.com/api/location/search/?query=";
         LOGGER.info(meteo);
         URL urlMeteo = new URL(meteo +town);
@@ -35,6 +34,7 @@ public class Weather {
             BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
             String inputLine;
             StringBuffer content = new StringBuffer();
+
             while ((inputLine = in.readLine()) != null) {
                 inputLine = inputLine.replace("[", "").replace("]","");
                 content.append(inputLine);
@@ -45,7 +45,6 @@ public class Weather {
             //return jo;
         }
         LOGGER.info(jo.get("woeid").toString());
-
         return jo;
         
 

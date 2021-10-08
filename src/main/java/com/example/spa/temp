@@ -1,0 +1,37 @@
+
+
+def append_to_list(alist, elem):
+  alist.append(elem)
+
+lst = []
+ret = append_to_list(lst, 3)
+# lst = [3, ]
+# ret == ? => ret = None
+append_to_list(lst, 2).append_to_list(lst, 4)
+#                     | try to call append_to_list method on null object
+
+======================================
+
+def append_to_list(alist, elem):
+  alist.append(elem)
+  return alist
+
+
+ret = append_to_list(lst, 3)
+# lst = [3, ]
+# ret == ? => [3, ]
+append_to_list(lst, []).append_to_list(lst, 4)
+
+  [ [ ], 4]
+
+=========
+
+def append_to_list(alist, elem):
+  alist.append(elem)
+  return elem
+
+ret = append_to_list(lst, [])
+# lst = [ [], ]
+# ret == ? => []
+append_to_list(lst, []).append_to_list(lst, 4)
+[ [ 4, ] ]

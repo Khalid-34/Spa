@@ -27,7 +27,7 @@ public class SpaApplication {
 
 	@GetMapping("/api/weather/")
 	public String weather() throws IOException {
-		String town = "Paris";
+		String town = "Marseille";
 		Weather weather = new Weather(town);
 
 		JSONObject a = new JSONObject(weather.get_weather().toString());
@@ -64,31 +64,28 @@ public class SpaApplication {
 		//JSONObject myString = new JSONObject(jo2);
 
 		JSONArray arr = jo2.getJSONArray("consolidated_weather");
-		String consolidated_weather = null;
+		String date = null;
 		String TempsMeteo = null;
-		JSONObject joFinal = null;
-
+		String picture_weather = null;
+		JSONObject joFinal = new JSONObject();
+		joFinal.put("content", new JSONArray());
+		JSONArray list_fill = (JSONArray) joFinal.get("content");
 		int Temperature = 0;
+
 		for (int i = 0; i < arr.length(); i++) {
 			var t = arr.getJSONObject(i);
-			consolidated_weather = t.getString("applicable_date");
+			var dct = new JSONObject();
+			date = t.getString("applicable_date");
 			TempsMeteo = t.getString("weather_state_name");
 			Temperature = t.getInt("the_temp");
-			joFinal = new JSONObject().put("date",consolidated_weather).put("weather",TempsMeteo).put("temperature",Temperature);
-
-
-
+			dct.put("date", date).put("weather",TempsMeteo).put("temperature", Temperature);
+			list_fill.put(dct);
 			//System.out.println(consolidated_weather);
-			LOGGER.info(joFinal.toString());
-			LOGGER.info(consolidated_weather);
-			LOGGER.info(TempsMeteo);
-			LOGGER.info(String.valueOf(Temperature));
 			//return consolidated_weather;
 		}
-		LOGGER.info("dernier json"+joFinal.toString());
-//		LOGGER.info(consolidated_weather);
-//		LOGGER.info(TempsMeteo);
-//		LOGGER.info(String.valueOf(Temperature));
+		LOGGER.info("dernier json: "+joFinal.toString());
+
+		//JSONObject infoMeteo =  new JSONObject("{\"day\":\"dd-mm-yyyy\", \"weather\": \"fog|snow|heavy rain\", \"picture_weather\": \"<URL to picture>\", \"temperature\": 12}");
 		return joFinal.toString();
 		//return consolidated_weather + TempsMeteo + Temperature;
 		//return jo2.toString();
