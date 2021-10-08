@@ -1,5 +1,6 @@
 package com.example.spa;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -53,12 +54,46 @@ public class SpaApplication {
 				content2.append(inputLine);
 
 			}
-			LOGGER.info(content2.toString() + "S2");
+			LOGGER.info("Content of Json: "+content2.toString());
 			jo2 = new JSONObject(content2.toString());
 
 		}
 		LOGGER.info(jo2.toString());
-		return jo2.toString();
+
+		//JSONObject myString = new JSONObject().put("day", jo2.getJSONArray("consolidated_weather").get("applicable_date")).toString();
+		//JSONObject myString = new JSONObject(jo2);
+
+		JSONArray arr = jo2.getJSONArray("consolidated_weather");
+		String consolidated_weather = null;
+		String TempsMeteo = null;
+		JSONObject joFinal = null;
+
+		int Temperature = 0;
+		for (int i = 0; i < arr.length(); i++) {
+			var t = arr.getJSONObject(i);
+			consolidated_weather = t.getString("applicable_date");
+			TempsMeteo = t.getString("weather_state_name");
+			Temperature = t.getInt("the_temp");
+			joFinal = new JSONObject().put("date",consolidated_weather).put("weather",TempsMeteo).put("temperature",Temperature);
+
+
+
+			//System.out.println(consolidated_weather);
+			LOGGER.info(joFinal.toString());
+			LOGGER.info(consolidated_weather);
+			LOGGER.info(TempsMeteo);
+			LOGGER.info(String.valueOf(Temperature));
+			//return consolidated_weather;
+		}
+		LOGGER.info("dernier json"+joFinal.toString());
+//		LOGGER.info(consolidated_weather);
+//		LOGGER.info(TempsMeteo);
+//		LOGGER.info(String.valueOf(Temperature));
+		return joFinal.toString();
+		//return consolidated_weather + TempsMeteo + Temperature;
+		//return jo2.toString();
+
+
 
 	}
 
