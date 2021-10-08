@@ -78,24 +78,26 @@ public class SpaApplication {
 			date = t.getString("applicable_date");
 			TempsMeteo = t.getString("weather_state_name");
 			Temperature = t.getInt("the_temp");
-			if(dct.get("weather") == "Heavy Cloud" || dct.get("weather") == "Showers" ||dct.get("weather") == "Light Cloud" || dct.get("weather") == "Light Rain" || dct.get("weather") == "Heavy Rain"){
+			picture_weather = null;
+			if(TempsMeteo == "Heavy Cloud" || TempsMeteo == "Showers" ||TempsMeteo == "Light Cloud" || TempsMeteo == "Light Rain" || TempsMeteo == "Heavy Rain"){
 				Weather meteoChien = new Weather(town);
 				picture_weather = meteoChien.get_UrlDog().toString();
 
 			}
-			if(dct.get("weather") == "Clear" || dct.get("weather") == "Sunny" ||dct.get("weather") == "Light Cloud"){
+			if(TempsMeteo == "Clear" || TempsMeteo == "Sunny" ||TempsMeteo == "Light Cloud"){
 				Weather meteoChat = new Weather(town);
 				picture_weather = meteoChat.get_UrlCats().toString();
+
 
 			}
 			else {
 				Weather meteoFox = new Weather(town);
 				picture_weather = meteoFox.get_UrlFox().toString();
 			}
-			LOGGER.info(picture_weather.toString());
+			LOGGER.info("url annimaux: "+picture_weather.toString());
+			//LOGGER.info(picture_weather.toString());
 			dct.put("date", date).put("weather",TempsMeteo).put("picture_weather",picture_weather).put("temperature", Temperature);
 			list_fill.put(dct);
-			//System.out.println(consolidated_weather);
 			//return consolidated_weather;
 		}
 		LOGGER.info("dernier json: "+joFinal.toString());
